@@ -1,70 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_basics/HomePage.dart';
+import 'package:flutter_basics/accident.dart';
+import 'package:flutter_basics/info.dart';
+
+
+
+
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
-  int currentIndex = 0;
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Accident Detection'),
-        ),
-        body: const Center(
-          child: Text(
-            'Welcome to Accident Detection App',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 35,
-              color: Colors.teal,
-            ),
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-                label: 'Home',
-                icon: Icon(
-                  Icons.home,
-                  //color: Colors.blue,
-                  size: 24,
-                )),
-            BottomNavigationBarItem(
-                label: 'Detect Accident',
-                icon: Icon(
-                  Icons.two_wheeler,
-                  size: 24,
-                ))
-          ],
-          currentIndex: currentIndex,
-          onTap: (int index){ 
-            setState(() {
-              currentIndex = index;
-            });
-          },
-        ),
-      ),
+      home:MyBottomBar(),
+
     );
   }
 }
 
-class TriggerButtonPage extends StatelessWidget {
-  const TriggerButtonPage({super.key});
+
+
+
+class MyBottomBar extends StatefulWidget {
+  const MyBottomBar({super.key});
+  @override
+  State<MyBottomBar> createState() => _MyBottomBarState();
+}
+
+class _MyBottomBarState extends State<MyBottomBar> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    HomePage(),
+    AccidentButtonPage(),
+    InfoPage(),
+  ];
+
+  void onTappedBar(int index)
+  {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTappedBar,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            label: 'Home',
+            icon: Icon(
+              Icons.home,
+              size: 24,
+              ),
+            ),
+            BottomNavigationBarItem(
+            label: 'Detect Accident',
+            icon: Icon(
+              Icons.two_wheeler,
+              size: 24,
+              ),
+            ),
+            BottomNavigationBarItem(
+            label: 'Info',
+            icon: Icon(
+              Icons.info,
+              size: 24,
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
