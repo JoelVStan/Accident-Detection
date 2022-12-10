@@ -15,17 +15,16 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
       appBar: AppBar(
         title: const Text('Accident Detection'),
       ),
-      body: const Center(
-        child: Text(
-            'Accident Trigger Button',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 25,
-              color: Colors.red, 
-            ),
-        ),
+      body: Center(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+          ),
+          onPressed: (){}, 
+          child: const Text('Trigger Accident'),
+        ) 
       ),
-      
     );
   }
 }
