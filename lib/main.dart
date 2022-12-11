@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_basics/HomePage.dart';
-import 'package:flutter_basics/accident.dart';
-import 'package:flutter_basics/info.dart';
+import 'package:accident_detection/HomePage.dart';
+import 'package:accident_detection/accident.dart';
+import 'package:accident_detection/info.dart';
 
 
 
