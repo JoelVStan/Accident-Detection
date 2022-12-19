@@ -51,21 +51,63 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
 }
 // locator code ends
 
-Future<void> GetAddressFromLatLong(Position position)async {
+Future<void> GetAddressFromLatLong(Position position, String location)async {
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
     print(placemarks);
     Placemark place = placemarks[0];
     address = '${place.thoroughfare}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.administrativeArea}, ${place.country}';
     telephony.sendSms(
 	    to: "9495319900",
-	    message: address
+	    message: "Emergency! Accident detected!\n$location\n$address",
             );
     setState(()  {
     });
   }
 
+  Timer? countdownTimer;
+  Duration myDuration = const Duration(seconds: 10);
+
+  void startTimer() {
+    countdownTimer =
+        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void stopTimer() {
+    setState(() => countdownTimer!.cancel());
+  }
+
+  void setCountDown() {
+    final reduceSecondsBy = 1;
+    setState(() {
+      final seconds = myDuration.inSeconds - reduceSecondsBy;
+      if (seconds < 0) {
+        countdownTimer!.cancel();
+        timerfinished();
+        showSMSsent();
+      } else {
+        myDuration = Duration(seconds: seconds);
+      }
+    });
+  }
+
+  void timerfinished() async{
+      Position position = await _getGeoLocationPosition();
+      location = 'Lat: ${position.latitude}, Long: ${position.longitude}';
+      GetAddressFromLatLong(position, location);
+  }
+
+  void showSMSsent() {
+    const snackBar2 = SnackBar(
+      content: Text('SMS Sent'),
+      );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+  }
+
   @override
   Widget build(BuildContext context) {
+    String strDigits(int n) => n.toString().padLeft(2, '0');
+
+    final seconds = strDigits(myDuration.inSeconds.remainder(60));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Accident Detection'),
@@ -77,6 +119,9 @@ Future<void> GetAddressFromLatLong(Position position)async {
           //Text(location, style: const TextStyle(fontSize: 15)
         //),
         //Text('${address}'),
+
+        
+
         const Text("Click Button to trigger accident", style: TextStyle(fontSize: 20)),
 
         
@@ -87,27 +132,62 @@ Future<void> GetAddressFromLatLong(Position position)async {
           ),
           onPressed: () async{
             
+            startTimer();
+
             // snackpack code
-            const snackBar = SnackBar(
-              content: Text('Collecting Location, sending SMS'),
+            const snackBar1 = SnackBar(
+              content: Text('Collecting Location.'),
               );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              ScaffoldMessenger.of(context).showSnackBar(snackBar1);
               
-              Position position = await _getGeoLocationPosition();
-              //print(position.latitude);
-              location = 'Lat: ${position.latitude}, Long: ${position.longitude}';
-              GetAddressFromLatLong(position);
-              //String add = address;
+              //Position position = await _getGeoLocationPosition();
+              //location = 'Lat: ${position.latitude}, Long: ${position.longitude}';
+              //GetAddressFromLatLong(position, location);
+              
             
-            const snackBa = SnackBar(
-              content: Text('SMS Sent'),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBa);
+            
             
 	          
           }, 
           child: const Text('Trigger Accident'),
-        ) 
+        ),
+
+        const Text(
+          "Timer",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20
+          ),
+          ),
+
+        Text(
+              seconds,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 50),
+            ),
+
+
+        ElevatedButton(
+              onPressed: () {
+                if (countdownTimer == null || countdownTimer!.isActive) {
+                  stopTimer();
+                }
+
+                const snackBar3 = SnackBar(
+                  content: Text('Timer Stopped. SMS not sent.'),
+                  );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar3);
+              },
+              child: const Text(
+                'Stop',
+                style: TextStyle(
+                  fontSize: 30,
+                ),
+              ),
+            ),
+
         ]
       ),
       ),

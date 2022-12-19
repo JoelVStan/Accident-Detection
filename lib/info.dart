@@ -16,14 +16,20 @@ class _InfoPageState extends State<InfoPage> {
         title: const Text('Accident Detection'),
       ),
       body: const Center(
-        child: Text(
-            'Information Page',
+        
+        child: 
+          
+          Text(
+            'Accident Detection App\n\nFinal year project by:\nS Sameem\nShameemudheen M P\nJoel Varghese Stanley',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 25,
               color: Colors.purple, 
             ),
+          
+            
         ),
+        
       ),
       
     );
