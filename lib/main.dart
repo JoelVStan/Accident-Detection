@@ -81,7 +81,7 @@ class _MyBottomBarState extends State<MyBottomBar> {
               ),
             ),
             BottomNavigationBarItem(
-            label: 'Bleutooth',
+            label: 'Bluetooth',
             icon: Icon(
               Icons.bluetooth,
               size: 24,
