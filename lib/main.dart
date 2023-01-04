@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_basics/HomePage.dart';
-import 'package:flutter_basics/accident.dart';
-import 'package:flutter_basics/info.dart';
-
-
+import 'package:accident_detection/HomePage.dart';
+import 'package:accident_detection/accident.dart';
+import 'package:accident_detection/info.dart';
+import 'package:accident_detection/bluetooth.dart';
 
 
 
@@ -39,6 +38,7 @@ class _MyBottomBarState extends State<MyBottomBar> {
     HomePage(),
     AccidentButtonPage(),
     InfoPage(),
+    BluetoothPage(),
   ];
 
   void onTappedBar(int index)
@@ -59,9 +59,11 @@ class _MyBottomBarState extends State<MyBottomBar> {
         items: const [
           BottomNavigationBarItem(
             label: 'Home',
+            backgroundColor: Colors.blue,
             icon: Icon(
               Icons.home,
               size: 24,
+              //color: Colors.blue,
               ),
             ),
             BottomNavigationBarItem(
@@ -75,6 +77,13 @@ class _MyBottomBarState extends State<MyBottomBar> {
             label: 'Info',
             icon: Icon(
               Icons.info,
+              size: 24,
+              ),
+            ),
+            BottomNavigationBarItem(
+            label: 'Bluetooth',
+            icon: Icon(
+              Icons.bluetooth,
               size: 24,
               ),
             ),
