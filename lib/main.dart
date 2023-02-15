@@ -38,7 +38,7 @@ class _MyBottomBarState extends State<MyBottomBar> {
     HomePage(),
     AccidentButtonPage(),
     InfoPage(),
-    BluetoothPage(),
+    BluetoothPage(title: 'Bluetooth Connection',),
   ];
 
   void onTappedBar(int index)
