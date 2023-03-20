@@ -9,7 +9,7 @@ class ScanResultTile extends StatelessWidget {
   final VoidCallback? onTap;
 
   Widget _buildTitle(BuildContext context) {
-    if (result.device.name.length > 0) {
+    if (result.device.name.isNotEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +20,7 @@ class ScanResultTile extends StatelessWidget {
           ),
           Text(
             result.device.id.toString(),
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           )
         ],
       );
@@ -31,12 +31,12 @@ class ScanResultTile extends StatelessWidget {
 
   Widget _buildAdvRow(BuildContext context, String title, String value) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(title, style: Theme.of(context).textTheme.caption),
-          SizedBox(
+          Text(title, style: Theme.of(context).textTheme.bodySmall),
+          const SizedBox(
             width: 12.0,
           ),
           Expanded(
@@ -44,7 +44,7 @@ class ScanResultTile extends StatelessWidget {
               value,
               style: Theme.of(context)
                   .textTheme
-                  .caption
+                  .bodySmall
                   ?.apply(color: Colors.black),
               softWrap: true,
             ),
@@ -84,17 +84,20 @@ class ScanResultTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style =
-        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+    // final ButtonStyle style =
+    //     ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
     return ExpansionTile(
       title: _buildTitle(context),
       leading: Text(result.rssi.toString()),
       trailing: ElevatedButton(
-        child: Text('CONNECT'),
         // color: Colors.black,
         // textColor: Colors.white,
         onPressed: (result.advertisementData.connectable) ? onTap : null,
-        style: style,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+        ),
+        child: const Text('CONNECT'),
       ),
       children: <Widget>[
         _buildAdvRow(
@@ -126,23 +129,23 @@ class ServiceTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (characteristicTiles.length > 0) {
+    if (characteristicTiles.isNotEmpty) {
       return ExpansionTile(
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Service'),
+            const Text('Service'),
             Text('0x${service.uuid.toString().toUpperCase().substring(4, 8)}',
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    color: Theme.of(context).textTheme.caption?.color))
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).textTheme.bodySmall?.color))
           ],
         ),
         children: characteristicTiles,
       );
     } else {
       return ListTile(
-        title: Text('Service'),
+        title: const Text('Service'),
         subtitle:
             Text('0x${service.uuid.toString().toUpperCase().substring(4, 8)}'),
       );
@@ -179,15 +182,15 @@ class CharacteristicTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Characteristic'),
+                const Text('Characteristic'),
                 Text(
                     '0x${characteristic.uuid.toString().toUpperCase().substring(4, 8)}',
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: Theme.of(context).textTheme.caption?.color))
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).textTheme.bodySmall?.color))
               ],
             ),
             subtitle: Text(value.toString()),
-            contentPadding: EdgeInsets.all(0.0),
+            contentPadding: const EdgeInsets.all(0.0),
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
@@ -240,12 +243,12 @@ class DescriptorTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Descriptor'),
+          const Text('Descriptor'),
           Text('0x${descriptor.uuid.toString().toUpperCase().substring(4, 8)}',
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1
-                  ?.copyWith(color: Theme.of(context).textTheme.caption?.color))
+                  .bodyLarge
+                  ?.copyWith(color: Theme.of(context).textTheme.bodySmall?.color))
         ],
       ),
       subtitle: StreamBuilder<List<int>>(
@@ -288,11 +291,11 @@ class AdapterStateTile extends StatelessWidget {
       child: ListTile(
         title: Text(
           'Bluetooth adapter is ${state.toString().substring(15)}',
-          style: Theme.of(context).primaryTextTheme.subtitle1,
+          style: Theme.of(context).primaryTextTheme.titleMedium,
         ),
         trailing: Icon(
           Icons.error,
-          color: Theme.of(context).primaryTextTheme.subtitle1?.color,
+          color: Theme.of(context).primaryTextTheme.titleMedium?.color,
         ),
       ),
     );
