@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'dart:io';
 import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -272,7 +274,7 @@ class DeviceScreen extends StatelessWidget {
                     children: <Widget>[
                       IconButton(
                         icon: const Icon(Icons.refresh),
-                        onPressed: discoverServices,
+                        onPressed: discoverServices, // calling function to handle the services
                       ),
                       const IconButton(
                         icon: SizedBox(
@@ -343,11 +345,18 @@ class DeviceScreen extends StatelessWidget {
   void subscribeToCharacteristic(BluetoothCharacteristic characteristic) async {
     await characteristic.setNotifyValue(true);
     characteristic.value.listen(
-      (value) {
+      (value) async {
         // Handle the received message
         String message = String.fromCharCodes(value);
         print("message is : $message");
+        if(message == 'accident')
+        {
+          sleep(const Duration(seconds: 5));
+          await characteristic.write(utf8.encode('Response'));
+          print('Response sent');
+        }
       },
     );
+    
   }
 }
