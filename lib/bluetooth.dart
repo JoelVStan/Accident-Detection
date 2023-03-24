@@ -127,7 +127,7 @@ class FindDevicesScreen extends StatelessWidget {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
                                   r.device.connect();
-                                  // print("result : $r");
+                                  print("Selected device is : ${r.device.name}");
                                   return DeviceScreen(device: r.device);
                                 }),
                               );
@@ -160,13 +160,19 @@ class FindDevicesScreen extends StatelessWidget {
       ),
     );
   }
+
 }
 
-class DeviceScreen extends StatelessWidget {
+class DeviceScreen extends StatefulWidget {
   const DeviceScreen({Key? key, required this.device}) : super(key: key);
 
   final BluetoothDevice device;
 
+  @override
+  State<DeviceScreen> createState() => _DeviceScreenState();
+}
+
+class _DeviceScreenState extends State<DeviceScreen> {
   List<int> _getRandomBytes() {
     final math = Random();
     return [
@@ -175,6 +181,56 @@ class DeviceScreen extends StatelessWidget {
       math.nextInt(255),
       math.nextInt(255)
     ];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    discoverServices();
+  }
+
+   // Discover the services and characteristics of the device
+  void discoverServices() async {
+    BluetoothCharacteristic characteristic;
+    print("Discovering services------------------------------------- ");
+    // print("Sleeping");
+    // sleep(const Duration(seconds: 10));
+    List<BluetoothService> servs = await widget.device.discoverServices();
+    servs.forEach(
+      (service) {
+        if (service.uuid.toString() == "4fafc201-1fb5-459e-8fcc-c5c9c331914b") {
+          // Replace XXXX with the UUID of the service
+          service.characteristics.forEach(
+            (c) {
+              if (c.uuid.toString() == "beb5483e-36e1-4688-b7f5-ea07361b26a8") {
+                // Replace YYYY with the UUID of the characteristic
+                print("!!!!!!!!!!Characteristic is matched");
+                characteristic = c;
+                subscribeToCharacteristic(characteristic);
+              }
+            },
+          );
+        }
+      },
+    );
+    // print('Service not found');
+  }
+
+  // Subscribe to the characteristic to receive notifications
+  void subscribeToCharacteristic(BluetoothCharacteristic characteristic) async {
+    await characteristic.setNotifyValue(true);
+    characteristic.value.listen(
+      (value) async {
+        // Handle the received message
+        String message = String.fromCharCodes(value);
+        print("message is : $message");
+        if (message == 'accident') {
+          sleep(const Duration(seconds: 5));
+          await characteristic.write(utf8.encode('Response'));
+          print('!!!!!!!!!!Response sent');
+        }
+      },
+    );
   }
 
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {
@@ -216,21 +272,24 @@ class DeviceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(device.name),
+        title: Text(widget.device.name),
         actions: <Widget>[
           StreamBuilder<BluetoothDeviceState>(
-            stream: device.state,
+            stream: widget.device.state,
             initialData: BluetoothDeviceState.connecting,
             builder: (c, snapshot) {
               VoidCallback? onPressed;
               String text;
               switch (snapshot.data) {
                 case BluetoothDeviceState.connected:
-                  onPressed = () => device.disconnect();
+                  onPressed = () => widget.device.disconnect();
                   text = 'DISCONNECT';
                   break;
                 case BluetoothDeviceState.disconnected:
-                  onPressed = () => device.connect();
+                  onPressed = () {
+                    widget.device.connect();
+                    discoverServices();
+                  };
                   text = 'CONNECT';
                   break;
                 default:
@@ -256,7 +315,7 @@ class DeviceScreen extends StatelessWidget {
         child: Column(
           children: <Widget>[
             StreamBuilder<BluetoothDeviceState>(
-              stream: device.state,
+              stream: widget.device.state,
               initialData: BluetoothDeviceState.connecting,
               builder: (c, snapshot) => ListTile(
                 leading: (snapshot.data == BluetoothDeviceState.connected)
@@ -265,16 +324,18 @@ class DeviceScreen extends StatelessWidget {
                 title: Text(
                   'Device is ${snapshot.data.toString().split('.')[1]}.',
                 ),
-                subtitle: Text('${device.id}'),
+                subtitle: Text('${widget.device.id}'),
                 trailing: StreamBuilder<bool>(
-                  stream: device.isDiscoveringServices,
+                  stream: widget.device.isDiscoveringServices,
                   initialData: false,
                   builder: (c, snapshot) => IndexedStack(
                     index: snapshot.data! ? 1 : 0,
                     children: <Widget>[
                       IconButton(
                         icon: const Icon(Icons.refresh),
-                        onPressed: discoverServices, // calling function to handle the services
+                        onPressed: () {
+                            // discoverServices(); // calling function to handle the services
+                        }
                       ),
                       const IconButton(
                         icon: SizedBox(
@@ -292,19 +353,19 @@ class DeviceScreen extends StatelessWidget {
               ),
             ),
             StreamBuilder<int>(
-              stream: device.mtu,
+              stream: widget.device.mtu,
               initialData: 0,
               builder: (c, snapshot) => ListTile(
                 title: const Text('MTU Size'),
                 subtitle: Text('${snapshot.data} bytes'),
                 trailing: IconButton(
                   icon: const Icon(Icons.edit),
-                  onPressed: () => device.requestMtu(223),
+                  onPressed: () => widget.device.requestMtu(223),
                 ),
               ),
             ),
             StreamBuilder<List<BluetoothService>>(
-              stream: device.services,
+              stream: widget.device.services,
               initialData: const [],
               builder: (c, snapshot) {
                 return Column(
@@ -318,45 +379,5 @@ class DeviceScreen extends StatelessWidget {
     );
   }
 
-  // Discover the services and characteristics of the device
-  void discoverServices() async {
-    BluetoothCharacteristic characteristic;
-    List<BluetoothService> servs = await device.discoverServices();
-    servs.forEach(
-      (service) {
-        if (service.uuid.toString() == "4fafc201-1fb5-459e-8fcc-c5c9c331914b") {
-          // Replace XXXX with the UUID of the service
-          service.characteristics.forEach(
-            (c) {
-              if (c.uuid.toString() == "beb5483e-36e1-4688-b7f5-ea07361b26a8") {
-                // Replace YYYY with the UUID of the characteristic
-                characteristic = c;
-                subscribeToCharacteristic(characteristic);
-                print("Got it !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-              }
-            },
-          );
-        }
-      },
-    );
-  }
-
-  // Subscribe to the characteristic to receive notifications
-  void subscribeToCharacteristic(BluetoothCharacteristic characteristic) async {
-    await characteristic.setNotifyValue(true);
-    characteristic.value.listen(
-      (value) async {
-        // Handle the received message
-        String message = String.fromCharCodes(value);
-        print("message is : $message");
-        if(message == 'accident')
-        {
-          sleep(const Duration(seconds: 5));
-          await characteristic.write(utf8.encode('Response'));
-          print('Response sent');
-        }
-      },
-    );
-    
-  }
+ 
 }
