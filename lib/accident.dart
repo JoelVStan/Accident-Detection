@@ -1,6 +1,5 @@
 import 'dart:async';
 // ignore: depend_on_referenced_packages
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -47,7 +46,7 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
   }
   // locator code ends
 
-  Future<void> GetAddressFromLatLong(Position position, String location) async {
+  Future<void> getAddressFromLatLong(Position position, String location) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     print(placemarks);
@@ -70,7 +69,7 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
 
   void startTimer() {
     countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
   }
 
   void stopTimer() {
@@ -78,7 +77,7 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
   }
 
   void setCountDown() {
-    final reduceSecondsBy = 1;
+    const reduceSecondsBy = 1;
     setState(() {
       final seconds = myDuration.inSeconds - reduceSecondsBy;
       if (seconds < 0) {
@@ -94,7 +93,7 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
   void timerfinished() async {
     Position position = await _getGeoLocationPosition();
     location = 'Lat: ${position.latitude}, Long: ${position.longitude}';
-    GetAddressFromLatLong(position, location);
+    getAddressFromLatLong(position, location);
   }
 
   void showSMSsent() {
