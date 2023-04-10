@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "722046467879",
+    "project_id": "accident-detection-3a292",
+    "storage_bucket": "accident-detection-3a292.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722046467879:android:1ba66a2e525424a113f302",
+        "android_client_info": {
+          "package_name": "com.example.flutter_basics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722046467879-su98lsueak1lh8oadupsqr2sd36r1m15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQICsxqjGKhwEGXKocl6euON9nc4uJGE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722046467879-su98lsueak1lh8oadupsqr2sd36r1m15.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

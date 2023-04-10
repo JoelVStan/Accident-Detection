@@ -12,7 +12,9 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFf3f8ff),
       appBar: AppBar(
+        backgroundColor: Color(0xFF1D3557),
         title: const Text('Accident Detection'),
       ),
       body: const Center(

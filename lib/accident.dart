@@ -7,7 +7,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:telephony/telephony.dart';
 
-
 class AccidentButtonPage extends StatefulWidget {
   const AccidentButtonPage({super.key});
 
@@ -125,7 +124,9 @@ Future<void> GetAddressFromLatLong(Position position, String location)async {
 
     final seconds = strDigits(myDuration.inSeconds.remainder(60));
     return Scaffold(
+      backgroundColor: Color(0xFFf3f8ff),
       appBar: AppBar(
+        backgroundColor: Color(0xFF1D3557),
         title: const Text('Accident Detection'),
       ),
       body: Center(
