@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 // ignore: depend_on_referenced_packages
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -115,13 +116,17 @@ Future<void> GetAddressFromLatLong(Position position, String location)async {
 
   }
 
+
+  
   @override
   Widget build(BuildContext context) {
     String strDigits(int n) => n.toString().padLeft(2, '0');
 
     final seconds = strDigits(myDuration.inSeconds.remainder(60));
     return Scaffold(
+      backgroundColor: Color(0xFFf3f8ff),
       appBar: AppBar(
+        backgroundColor: Color(0xFF1D3557),
         title: const Text('Accident Detection'),
       ),
       body: Center(

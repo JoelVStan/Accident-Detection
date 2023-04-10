@@ -1,12 +1,20 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:accident_detection/HomePage.dart';
 import 'package:accident_detection/accident.dart';
 import 'package:accident_detection/info.dart';
 import 'package:accident_detection/bluetooth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'auth/login.dart';
+import 'emergency_page.dart';
 
 
+void main() async {
+ WidgetsFlutterBinding.ensureInitialized();
+ await Firebase.initializeApp();
 
-void main() {
   runApp(const MyApp());
 }
 
@@ -15,15 +23,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:MyBottomBar(),
-
+      //home:MyBottomBar(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return MyBottomBar();
+          } else {
+            return LoginForm();
+          }
+          },
+        ),
+        
+        
     );
   }
 }
-
-
 
 
 class MyBottomBar extends StatefulWidget {
@@ -37,13 +54,14 @@ class _MyBottomBarState extends State<MyBottomBar> {
   final List<Widget> _children = [
     HomePage(),
     AccidentButtonPage(),
-    InfoPage(),
-    BluetoothPage(),
+    EmergencyPage(),
+    BluetoothPage(title: 'Bluetooth Connection',),
   ];
 
   void onTappedBar(int index)
   {
     setState(() {
+      print("Index = $index");
       _currentIndex = index;
     });
   }
@@ -56,10 +74,12 @@ class _MyBottomBarState extends State<MyBottomBar> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTappedBar,
         currentIndex: _currentIndex,
+        //fixedColor: Colors.white,
+        backgroundColor: Color(0xFF1D3557),
         items: const [
           BottomNavigationBarItem(
             label: 'Home',
-            backgroundColor: Colors.blue,
+            backgroundColor: Color(0xFF1D3557),
             icon: Icon(
               Icons.home,
               size: 24,
@@ -68,19 +88,21 @@ class _MyBottomBarState extends State<MyBottomBar> {
             ),
             BottomNavigationBarItem(
             label: 'Detect Accident',
+            //backgroundColor: Color.fromARGB(255, 255, 187, 0),
             icon: Icon(
               Icons.two_wheeler,
               size: 24,
               ),
             ),
             BottomNavigationBarItem(
-            label: 'Info',
+            label: 'Contacts',
             icon: Icon(
-              Icons.info,
+              Icons.emergency_outlined,
               size: 24,
               ),
             ),
             BottomNavigationBarItem(
+            //backgroundColor: Color(0xFF1D3557),
             label: 'Bluetooth',
             icon: Icon(
               Icons.bluetooth,
