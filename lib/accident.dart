@@ -19,7 +19,8 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
   String message = "";
   final telephony = Telephony.instance;
 
-  // gelocator code start
+  // gelocator
+  // needs internet connection
   Future<Position> _getGeoLocationPosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -51,12 +52,13 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
         await placemarkFromCoordinates(position.latitude, position.longitude);
     print(placemarks);
     Placemark place = placemarks[0];
+    // Placemark place = "ABC City, Kerala";
     //String? street = place.street;
     // remove space from street name
     address =
         '${place.street}, ${place.locality}, ${place.postalCode}, ${place.administrativeArea}, ${place.country}';
     String loc = location;
-    List<String> num = ["8089374989"];
+    List<String> num = ["8547940892"];
     for (int i = 0; i < num.length; i++) {
       msgnumber(num[i], loc, address);
     }
@@ -93,7 +95,9 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
   void timerfinished() async {
     Position position = await _getGeoLocationPosition();
     location = 'Lat: ${position.latitude}, Long: ${position.longitude}';
-    getAddressFromLatLong(position, location);
+    getAddressFromLatLong(
+        position, location); // It needs an internet connection
+    // msgnumber('8547940892', 'loc', 'address');
   }
 
   void showSMSsent() {

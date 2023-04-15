@@ -106,6 +106,7 @@ class FindDevicesScreen extends StatelessWidget {
         print("message is : $message");
         if (message == 'accident') {
           // sleep(const Duration(seconds: 5));
+          // timer + API call
           await characteristic.write(utf8.encode('Response'));
           print('!!!!!!!!!!Response sent');
         }
@@ -235,49 +236,6 @@ class _DeviceScreenState extends State<DeviceScreen> {
   //   discoverServices();
   // }
 
-   // Discover the services and characteristics of the device
-  void discoverServices() async {
-    BluetoothCharacteristic characteristic;
-    print("Discovering services------------------------------------- ");
-    // print("Sleeping");
-    // sleep(const Duration(seconds: 10));
-    List<BluetoothService> servs = await widget.device.discoverServices();
-    servs.forEach(
-      (service) {
-        if (service.uuid.toString() == "4fafc201-1fb5-459e-8fcc-c5c9c331914b") {
-          // Replace XXXX with the UUID of the service
-          service.characteristics.forEach(
-            (c) {
-              if (c.uuid.toString() == "beb5483e-36e1-4688-b7f5-ea07361b26a8") {
-                // Replace YYYY with the UUID of the characteristic
-                print("!!!!!!!!!!Characteristic is matched");
-                characteristic = c;
-                subscribeToCharacteristic(characteristic);
-              }
-            },
-          );
-        }
-      },
-    );
-    // print('Service not found');
-  }
-
-  // Subscribe to the characteristic to receive notifications
-  void subscribeToCharacteristic(BluetoothCharacteristic characteristic) async {
-    await characteristic.setNotifyValue(true);
-    characteristic.value.listen(
-      (value) async {
-        // Handle the received message
-        String message = String.fromCharCodes(value);
-        print("message is : $message");
-        if (message == 'accident') {
-          // sleep(const Duration(seconds: 5));
-          await characteristic.write(utf8.encode('Response'));
-          print('!!!!!!!!!!Response sent');
-        }
-      },
-    );
-  }
 
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {
     return services
@@ -334,7 +292,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                 case BluetoothDeviceState.disconnected:
                   onPressed = () {
                     widget.device.connect();
-                    discoverServices();
+                    // discoverServices();
                   };
                   text = 'CONNECT';
                   break;
