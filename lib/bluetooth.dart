@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:ffi';
 import 'dart:io';
@@ -9,7 +10,7 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:accident_detection/widgets.dart';
 
 class BluetoothPage extends StatefulWidget {
-  const BluetoothPage({super.key});
+  const BluetoothPage({super.key, required String title});
 
   @override
   State<BluetoothPage> createState() => _BluetoothPageState();
@@ -271,6 +272,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
         )
         .toList();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {

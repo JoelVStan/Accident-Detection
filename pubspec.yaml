@@ -40,6 +40,22 @@ dependencies:
   telephony: 
   geolocator: #latest version
   geocoding:  #latest version
+  cloud_firestore: ^4.4.3
+  firebase_core: ^2.7.0
+  flutterfire_ui: ^0.4.3+20
+  flutter_launcher_icons: ^0.12.0
+  flutter_slidable: ^2.0.0
+  fluttertoast: ^8.2.1
+  contacts_service: ^0.6.3
+  permission_handler: ^10.2.0
+  google_fonts: ^4.0.3
+  curved_navigation_bar: ^1.0.3
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: assets/icon-2.png
+  
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +80,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets: 
+    - assets/logo.png
+    - assets/icon-2.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
