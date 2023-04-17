@@ -42,7 +42,7 @@ class _LoginFormState extends State<LoginForm> {
         // save the token
         sharedPreferences.setString("token", data['token']);
         // save the user full name
-
+        sharedPreferences.setString("full_name", data['full_name']);
         // save the user email
         sharedPreferences.setString("email", data['email']);
         Navigator.of(context).pushAndRemoveUntil(
