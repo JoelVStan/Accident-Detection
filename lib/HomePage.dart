@@ -11,6 +11,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'info.dart';
 
+
+final currentUser = FirebaseAuth.instance.currentUser;
+
+// Name, email address, and profile photo URL
+String? _name = 'UserFullname';
+String? _email = 'email';
+
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
   
@@ -19,15 +27,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-final currentUser = FirebaseAuth.instance.currentUser;
-
-    // Name, email address, and profile photo URL
-
-String? name = 'UserFullname';
-String? email = 'email';
-
-
 class _HomePageState extends State<HomePage> {
+  
 
   int _currentIndex = 0;
   final List<Widget> _pages = [
@@ -46,6 +47,20 @@ class _HomePageState extends State<HomePage> {
   // ];
 
   late SharedPreferences sharedPreferences;
+
+  @override
+  void initState(){
+    setUsernameAndEmail();
+    super.initState();
+  }
+
+  void setUsernameAndEmail() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+        _email = sharedPreferences.getString('email'); // email of the currently logged in user
+        _name = sharedPreferences.getString('full_name'); // full name of the currently logged in user
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.w500,
                     )
                   ),),
-                  Text(name!,
+                  Text(_name!,
                   style: GoogleFonts.montserrat(
                     textStyle: TextStyle(
                       color: Color(0xFF457B9D),
@@ -211,13 +226,13 @@ class NavigationDrawer extends StatelessWidget {
           ),
           SizedBox(height: 12,),
           Text(
-            '$name',
+            '$_name',
             style: GoogleFonts.montserrat(
               textStyle: TextStyle(
                 fontSize: 28, color: Color(0xFFf3f8ff))),
             ),
             Text(
-              '$email',
+              '$_email',
               style: GoogleFonts.montserrat(
               textStyle: TextStyle(
                 fontSize: 14, color: Colors.white)),
