@@ -21,19 +21,19 @@ class _EmergencyPageState extends State<EmergencyPage> {
   final _namecontroller = TextEditingController();
   final _numbercontroller = TextEditingController();
 
-  addNumbertoFirebase() async {
-    // FirebaseAuth Auth = FirebaseAuth.instance;
-    // final User? user = Auth.currentUser;
-    final user = FirebaseAuth.instance.currentUser!;
-    String uid = user.uid;
-    var time = DateTime.now();
+  // addNumbertoFirebase() async {
+  //   // FirebaseAuth Auth = FirebaseAuth.instance;
+  //   // final User? user = Auth.currentUser;
+  //   final user = FirebaseAuth.instance.currentUser!;
+  //   String uid = user.uid;
+  //   var time = DateTime.now();
 
-    await FirebaseFirestore.instance.collection('users').doc(uid).collection('my contacts').doc(time.toString()).set({
-      'name': _namecontroller.text,
-      'number' : _numbercontroller.text,
-    });
-    Fluttertoast.showToast(msg: 'Contact added');
-  }
+  //   await FirebaseFirestore.instance.collection('users').doc(uid).collection('my contacts').doc(time.toString()).set({
+  //     'name': _namecontroller.text,
+  //     'number' : _numbercontroller.text,
+  //   });
+  //   Fluttertoast.showToast(msg: 'Contact added');
+  // }
 
   void createNewContact() {
     showDialog(
@@ -68,7 +68,7 @@ class _EmergencyPageState extends State<EmergencyPage> {
                   children: [
                     MaterialButton(
                       onPressed: () {
-                        addNumbertoFirebase();
+                        //addNumbertoFirebase();
                         Navigator.of(context).pop();                      
                         },
 
@@ -101,16 +101,16 @@ class _EmergencyPageState extends State<EmergencyPage> {
 
   @override
   void initState() {
-    getuid();
+    //getuid();
     super.initState();
   }
 
-  getuid() {
-    final user = FirebaseAuth.instance.currentUser!;
-    setState(() {
-      uid = user.uid;
-    });
-  }
+  // getuid() {
+  //   final user = FirebaseAuth.instance.currentUser!;
+  //   setState(() {
+  //     uid = user.uid;
+  //   });
+  // }
 
 
   @override
@@ -135,54 +135,93 @@ class _EmergencyPageState extends State<EmergencyPage> {
         child: Icon(Icons.add_ic_call_rounded),
         ),
 
+// -------This is the code for box with name: number-------------------
+
+
         body: Container(
-          height: MediaQuery.of(context).size.height,
-          width:  MediaQuery.of(context).size.width,
-          child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('users').doc(uid).collection('my contacts').snapshots(),
-            builder: (context, snapshot){
-              if(snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              else{
-                final docs = snapshot.data?.docs;
-                return ListView.builder(
-                  itemCount: docs?.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),                        
-                      child: Container(                        
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFE63946),
-                          //border: Border.all(color: Colors.purpleAccent.shade400, width: 2),
-                          borderRadius: BorderRadius.circular(12)
-                    
-                        ),
-                        child: Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+          padding: EdgeInsets.all(10),
+
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container( 
+                            height: 50,
+                            width:  500,                      
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE63946),
+                              //border: Border.all(color: Colors.purpleAccent.shade400, width: 2),
+                              borderRadius: BorderRadius.circular(10)
+                        
+                            ),
+                            child: Row(
                               children: [
-                              Text(docs![index]['name'] + ': ' + docs[index]['number'],
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.montserrat(textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15, 
-                                fontWeight: FontWeight.w600),
-                                )),
-                            ],),
-                          ],
-                        ),
-                      ),
-                    );
-                    
-                  } ,
-                  );
-              }
-            },
-            ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                  Text('name' + ': ' + 'number',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.montserrat(textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15, 
+                                    fontWeight: FontWeight.w600),
+                                    )),
+                                ],),
+                              ],
+                            ),
+                          ),
+          ),
         ),
+
+        // -------ENDS-----This is the code for box with name: number-------------------
+
+        // body: Container(
+        //   height: MediaQuery.of(context).size.height,
+        //   width:  MediaQuery.of(context).size.width,
+        //   child: StreamBuilder(
+        //     //stream: FirebaseFirestore.instance.collection('users').doc(uid).collection('my contacts').snapshots(),
+        //     builder: (context, snapshot){
+        //       if(snapshot.connectionState == ConnectionState.waiting) {
+        //         return Center(child: CircularProgressIndicator());
+        //       }
+        //       else{
+        //         //final docs = snapshot.data?.docs;
+        //         return ListView.builder(
+        //           //itemCount: docs?.length,
+        //           itemBuilder: (context, index) {
+        //             return Padding(
+        //               padding: const EdgeInsets.all(10.0),                        
+        //               child: Container(                        
+        //                 padding: EdgeInsets.all(15),
+        //                 decoration: BoxDecoration(
+        //                   color: Color(0xFFE63946),
+        //                   //border: Border.all(color: Colors.purpleAccent.shade400, width: 2),
+        //                   borderRadius: BorderRadius.circular(12)
+                    
+        //                 ),
+        //                 child: Row(
+        //                   children: [
+        //                     Column(
+        //                       mainAxisAlignment: MainAxisAlignment.center,
+        //                       children: [
+        //                       Text('name' + ': ' + 'number',
+        //                       textAlign: TextAlign.center,
+        //                       style: GoogleFonts.montserrat(textStyle: TextStyle(
+        //                         color: Colors.white,
+        //                         fontSize: 15, 
+        //                         fontWeight: FontWeight.w600),
+        //                         )),
+        //                     ],),
+        //                   ],
+        //                 ),
+        //               ),
+        //             );
+                    
+        //           } ,
+        //           );
+        //       }
+        //     },
+        //     ),
+        // ),
     );
   }
 }
