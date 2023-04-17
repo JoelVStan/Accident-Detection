@@ -80,7 +80,7 @@ class _MyBottomBarState extends State<MyBottomBar> {
   void onTappedBar(int index)
   {
     setState(() {
-      print("Index = $index");
+      // print("Index = $index");
       _currentIndex = index;
     });
   }

@@ -51,7 +51,8 @@ class _LoginFormState extends State<LoginForm> {
             (route) => false);
         // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
       } else {
-        print('failed');
+        print('Invalid username or password!');
+        // put the code here to show the failure
       }
     } catch (e) {
       print(e.toString());
@@ -76,7 +77,8 @@ class _LoginFormState extends State<LoginForm> {
         print('Account created successfully');
         signIn();
       } else {
-        print('failed');
+        print("Couldn't create the account!");
+        // put the code to show the faiure
       }
     } catch (e) {
       print(e.toString());
