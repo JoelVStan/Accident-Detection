@@ -44,7 +44,7 @@ class BluetoothOffScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: const Color.fromARGB(255, 0, 95, 139),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -55,7 +55,7 @@ class BluetoothOffScreen extends StatelessWidget {
               color: Colors.white54,
             ),
             Text(
-              'Bluetooth Adapter is ${state != null ? state.toString().substring(15) : 'not available'}.',
+              'Bluetooth is ${state != null ? state.toString().substring(15) : 'not available'}.',
               style: Theme.of(context)
                   .primaryTextTheme
                   .titleMedium
@@ -120,6 +120,7 @@ class FindDevicesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Find Devices'),
+         backgroundColor: const Color(0xFF1D3557),
       ),
       body: RefreshIndicator(
         onRefresh: () => FlutterBlue.instance
@@ -201,6 +202,7 @@ class FindDevicesScreen extends StatelessWidget {
           } else {
             return FloatingActionButton(
                 child: const Icon(Icons.search),
+                 backgroundColor: const Color(0xFF1D3557),
                 onPressed: () => FlutterBlue.instance
                     .startScan(timeout: const Duration(seconds: 4)));
           }

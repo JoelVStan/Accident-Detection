@@ -86,7 +86,7 @@ class ScanResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final ButtonStyle style =
-    //     ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+    // ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
     return ExpansionTile(
       title: _buildTitle(context),
       leading: Text(result.rssi.toString()),
@@ -95,7 +95,7 @@ class ScanResultTile extends StatelessWidget {
         // textColor: Colors.white,
         onPressed: (result.advertisementData.connectable) ? onTap : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
+          backgroundColor: const Color(0xFF1D3557),
           foregroundColor: Colors.white,
         ),
         child: const Text('CONNECT'),
