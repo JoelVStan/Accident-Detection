@@ -103,186 +103,194 @@ class _LoginFormState extends State<LoginForm> {
           )),
         ),
       ),
-      body: SingleChildScrollView(
-        child: _isLoading ? const Center(child: CircularProgressIndicator(),) 
-            : Form(
-                key: _formKey,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 150),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // welcome text
-                      Text(
-                        'Welcome!',
-                        style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                color: Color(0xFF457B9D))),
-                      ),
-
-                      const SizedBox(
-                        height: 20,
-                      ),
-
-                      // ======== Full Name ========
-                      login
-                          ? Container()
-                          : Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                padding: const EdgeInsets.only(left: 20),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFf3f8ff),
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: TextFormField(
-                                  controller: fullnameController,
-                                  key: const ValueKey('fullname'),
-                                  decoration: InputDecoration(
-                                    hintText: 'Full Name',
-                                    hintStyle: GoogleFonts.montserrat(
-                                      textStyle: const TextStyle(color: Colors.grey),
-                                    ),
-                                    border: InputBorder.none,
+      body: _isLoading ? Container(
+        child: 
+            const Center(
+                child: CircularProgressIndicator(),
+              )
+      ) 
+      : SingleChildScrollView(
+        child: Form(
+                  key: _formKey,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 25, vertical: 150),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // welcome text
+                        Text(
+                          'Welcome!',
+                          style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Color(0xFF457B9D))),
+                        ),
+      
+                        const SizedBox(
+                          height: 20,
+                        ),
+      
+                        // ======== Full Name ========
+                        login
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFf3f8ff),
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please Enter Full Name';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+                                  child: TextFormField(
+                                    controller: fullnameController,
+                                    key: const ValueKey('fullname'),
+                                    decoration: InputDecoration(
+                                      hintText: 'Full Name',
+                                      hintStyle: GoogleFonts.montserrat(
+                                        textStyle:
+                                            const TextStyle(color: Colors.grey),
+                                      ),
+                                      border: InputBorder.none,
+                                    ),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please Enter Full Name';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-
-                      // ======== Email ========
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 20),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFf3f8ff),
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: TextFormField(
-                            controller: emailController,
-                            key: const ValueKey('email'),
-                            decoration: InputDecoration(
-                              hintText: 'Email',
-                              hintStyle: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(color: Colors.grey),
-                              ),
-                              border: InputBorder.none,
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty || !value.contains('@')) {
-                                return 'Please Enter valid Email';
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-
-                      // ======== Password ========
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 20),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFf3f8ff),
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: TextFormField(
-                            controller: passwordController,
-                            key: const ValueKey('password'),
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Password',
-                              hintStyle: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(color: Colors.grey),
-                              ),
-                              border: InputBorder.none,
-                            ),
-                            validator: (value) {
-                              if (value!.length < 6) {
-                                return 'Please Enter Password of min length 6';
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 2,
-                      ),
-
-                      // button
-
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: GestureDetector(
-                          onTap: () async {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              fullname = fullnameController.text.toString();
-                              email = emailController.text.toString();
-                              password = passwordController.text.toString();
-                              setState(() {
-                                _isLoading = true;
-                              });
-                              login ? signIn() : signUp();
-                            }
-                          },
+      
+                        // ======== Email ========
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            padding: const EdgeInsets.all(15),
+                            padding: const EdgeInsets.only(left: 20),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFE63946),
+                              color: const Color(0xFFf3f8ff),
+                              border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Center(
-                              child: Text(
-                                login ? 'Login' : 'Sign Up',
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(color: Colors.white),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
+                            child: TextFormField(
+                              controller: emailController,
+                              key: const ValueKey('email'),
+                              decoration: InputDecoration(
+                                hintText: 'Email',
+                                hintStyle: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(color: Colors.grey),
+                                ),
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty || !value.contains('@')) {
+                                  return 'Please Enter valid Email';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+      
+                        // ======== Password ========
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 20),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFf3f8ff),
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: TextFormField(
+                              controller: passwordController,
+                              key: const ValueKey('password'),
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                hintText: 'Password',
+                                hintStyle: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(color: Colors.grey),
+                                ),
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value!.length < 6) {
+                                  return 'Please Enter Password of min length 6';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+      
+                        // button
+      
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                fullname = fullnameController.text.toString();
+                                email = emailController.text.toString();
+                                password = passwordController.text.toString();
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                login ? signIn() : signUp();
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFE63946),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  login ? 'Login' : 'Sign Up',
+                                  style: GoogleFonts.montserrat(
+                                    textStyle:
+                                        const TextStyle(color: Colors.white),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 2,
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              login = !login;
-                            });
-                          },
-                          child: Text(
-                              login
-                                  ? "Don't have an account? Signup"
-                                  : "Already have an account? Login",
-                              style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: Color(0xFF457B9D),
-                                      fontWeight: FontWeight.w600),
-                                  fontSize: 14)))
-                    ],
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              setState(() {
+                                login = !login;
+                              });
+                            },
+                            child: Text(
+                                login
+                                    ? "Don't have an account? Signup"
+                                    : "Already have an account? Login",
+                                style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        color: Color(0xFF457B9D),
+                                        fontWeight: FontWeight.w600),
+                                    fontSize: 14)))
+                      ],
+                    ),
                   ),
                 ),
-              ),
       ),
     );
   }
