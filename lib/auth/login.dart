@@ -53,6 +53,14 @@ class _LoginFormState extends State<LoginForm> {
       } else {
         print('Invalid username or password!');
         // put the code here to show the failure
+
+        const snackBar1 = SnackBar(
+          content: Text('Invalid username or password!'),
+          );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginForm()), (route) => false);
+
       }
     } catch (e) {
       print(e.toString());
@@ -79,6 +87,13 @@ class _LoginFormState extends State<LoginForm> {
       } else {
         print("Couldn't create the account!");
         // put the code to show the faiure
+        const snackBar2 = SnackBar(
+          content: Text("Couldn't create the account!"),
+          );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar2);
+
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginForm()), (route) => false);
+
       }
     } catch (e) {
       print(e.toString());
