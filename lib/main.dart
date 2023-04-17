@@ -75,12 +75,6 @@ class _MyBottomBarState extends State<MyBottomBar> {
     if(sharedPreferences.getString("token") == null){
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginForm()), (route) => false);
     }
-    else {
-      // if already logged in, take the user full name and email from sharedresources
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      email = sharedPreferences.getString('email'); // email of the currently logged in user
-      name = sharedPreferences.getString('full_name'); // full name of the currently logged in user
-    }
   }
 
   void onTappedBar(int index)
