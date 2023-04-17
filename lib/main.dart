@@ -1,13 +1,9 @@
 import 'package:accident_detection/HomePage.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 // import 'package:accident_detection/HomePage.dart';
 import 'package:accident_detection/accident.dart';
-import 'package:accident_detection/info.dart';
 import 'package:accident_detection/bluetooth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:accident_detection/signupandsignin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
