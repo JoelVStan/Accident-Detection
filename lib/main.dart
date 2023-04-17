@@ -1,11 +1,15 @@
+import 'package:accident_detection/HomePage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:accident_detection/HomePage.dart';
+// import 'package:accident_detection/HomePage.dart';
 import 'package:accident_detection/accident.dart';
 import 'package:accident_detection/info.dart';
 import 'package:accident_detection/bluetooth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:accident_detection/signupandsignin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 import 'auth/login.dart';
 import 'emergency_page.dart';
@@ -23,19 +27,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       //home:MyBottomBar(),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return MyBottomBar();
-          } else {
-            return LoginForm();
-          }
-          },
-        ),
+      home: MyBottomBar(),
+      // home: StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData) {
+      //       return const MyBottomBar();
+      //     } else {
+      //       return const LoginForm();
+      //     }
+      //     },
+      //   ),
         
         
     );
@@ -58,6 +63,29 @@ class _MyBottomBarState extends State<MyBottomBar> {
     BluetoothPage(title: 'Bluetooth Connection',),
   ];
 
+  late SharedPreferences sharedPreferences; 
+
+  @override
+  void initState(){
+    checkLoginStatus(); // asynchronously check whether there is a user already logged in or not
+    // super.initState();
+  }
+
+  void checkLoginStatus() async {
+    print("checkLoginStatus() called");
+    sharedPreferences = await SharedPreferences.getInstance();
+    String? cur_token = sharedPreferences.getString("token");
+    print("Current user token : $cur_token");
+    if(sharedPreferences.getString("token") == null){
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginForm()), (route) => false);
+    }
+    else {
+      // if already logged in, take the user full name and email from sharedresources
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      email = sharedPreferences.getString('email'); // email of the currently logged in user
+    }
+  }
+
   void onTappedBar(int index)
   {
     setState(() {
@@ -65,6 +93,8 @@ class _MyBottomBarState extends State<MyBottomBar> {
       _currentIndex = index;
     });
   }
+
+  
 
 
   @override

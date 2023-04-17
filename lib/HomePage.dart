@@ -1,11 +1,13 @@
 import 'package:accident_detection/accident.dart';
 import 'package:accident_detection/addcontact_page.dart';
+import 'package:accident_detection/auth/login.dart';
 import 'package:accident_detection/bluetooth.dart';
 import 'package:accident_detection/emergency_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'info.dart';
 
@@ -20,9 +22,9 @@ class HomePage extends StatefulWidget {
 final currentUser = FirebaseAuth.instance.currentUser;
 
     // Name, email address, and profile photo URL
-String? name = currentUser!.displayName;
-String? email = currentUser!.email;
 
+String? name = 'UserFullname';
+String? email = 'email';
 
 
 class _HomePageState extends State<HomePage> {
@@ -43,6 +45,8 @@ class _HomePageState extends State<HomePage> {
   //   ["About App", const Icon(Icons.info_outline_rounded)],
   // ];
 
+  late SharedPreferences sharedPreferences;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +56,10 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () async {
-                await FirebaseAuth.instance.signOut();
+                // await FirebaseAuth.instance.signOut();
+                sharedPreferences = await SharedPreferences.getInstance();
+                sharedPreferences.clear();
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const LoginForm()), (route) => false);
               },
               icon: const Icon(Icons.logout))
         ],
@@ -65,79 +72,80 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: const NavigationDrawer(),
       body: 
-      Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-      
-          // welcome user
-          SizedBox(height: 35,),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Welcome,',
-                style: GoogleFonts.montserrat(
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF457B9D),
-                    fontWeight: FontWeight.w500,
-                  )
-                ),),
-                Text(name!,
-                style: GoogleFonts.montserrat(
-                  textStyle: TextStyle(
-                    color: Color(0xFF457B9D),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 35
-                  )
-                ),),
-              ],
+      SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            // welcome user
+            SizedBox(height: 35,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Welcome,',
+                  style: GoogleFonts.montserrat(
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF457B9D),
+                      fontWeight: FontWeight.w500,
+                    )
+                  ),),
+                  Text(name!,
+                  style: GoogleFonts.montserrat(
+                    textStyle: TextStyle(
+                      color: Color(0xFF457B9D),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 35
+                    )
+                  ),),
+                ],
+              ),
             ),
-          ),
-      
-          SizedBox(height: 30,),
-      
-          Center(
-            child: Column(
-              children: <Widget>[
-                Image.asset('assets/icon-2.png',
-                height: 250,
-                ),
-      
-              Text('Accident Detection\nApplication',
-              textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(
-                  textStyle: TextStyle(
-                    color: Color(0xFFE63946),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30
-                  )
-                ),),
-              ],
-              
-            ),
-          ),
-      
-          SizedBox(height: 20,),
-      
-          // Expanded(
-          //   child: GridView.builder(
-          //     itemCount: 4,
-          //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          //       crossAxisCount: 2), 
-          //     itemBuilder: (context, index) {
-          //       return GridBox(
-          //         pageName: myIcons[index][0],
-          //         iconPath: myIcons[index][1],
-          //       );
+        
+            SizedBox(height: 30,),
+        
+            Center(
+              child: Column(
+                children: <Widget>[
+                  Image.asset('assets/icon-2.png',
+                  height: 250,
+                  ),
+        
+                Text('Accident Detection\nApplication',
+                textAlign: TextAlign.center,
+                  style: GoogleFonts.montserrat(
+                    textStyle: TextStyle(
+                      color: Color(0xFFE63946),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30
+                    )
+                  ),),
+                ],
                 
-          //     }
-          //   )
-            
-          //   ),
-      
-        ] 
+              ),
+            ),
+        
+            SizedBox(height: 20,),
+        
+            // Expanded(
+            //   child: GridView.builder(
+            //     itemCount: 4,
+            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            //       crossAxisCount: 2), 
+            //     itemBuilder: (context, index) {
+            //       return GridBox(
+            //         pageName: myIcons[index][0],
+            //         iconPath: myIcons[index][1],
+            //       );
+                  
+            //     }
+            //   )
+              
+            //   ),
+        
+          ] 
+        ),
       ), 
       
 
