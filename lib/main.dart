@@ -1,4 +1,5 @@
 import 'package:accident_detection/HomePage.dart';
+import 'package:accident_detection/map_page.dart';
 import 'package:flutter/material.dart';
 // import 'package:accident_detection/HomePage.dart';
 import 'package:accident_detection/accident.dart';
@@ -55,7 +56,7 @@ class _MyBottomBarState extends State<MyBottomBar> {
   final List<Widget> _children = [
     HomePage(),
     AccidentButtonPage(),
-    EmergencyPage(),
+    MapPage(),
     BluetoothPage(title: 'Bluetooth Connection',),
   ];
 
@@ -116,9 +117,9 @@ class _MyBottomBarState extends State<MyBottomBar> {
               ),
             ),
             BottomNavigationBarItem(
-            label: 'Contacts',
+            label: 'BlackSpot',
             icon: Icon(
-              Icons.emergency_outlined,
+              Icons.crisis_alert,
               size: 24,
               ),
             ),

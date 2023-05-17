@@ -1,3 +1,20 @@
+// import 'package:flutter/src/widgets/framework.dart';
+// import 'package:flutter/src/widgets/placeholder.dart';
+
+// class BluetoothPage extends StatefulWidget {
+//   const BluetoothPage({super.key});
+
+//   @override
+//   State<BluetoothPage> createState() => _BluetoothPageState();
+// }
+
+// class _BluetoothPageState extends State<BluetoothPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
+
 
 import 'dart:async';
 import 'dart:ffi';

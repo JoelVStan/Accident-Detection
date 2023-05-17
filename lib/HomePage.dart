@@ -256,10 +256,10 @@ class NavigationDrawer extends StatelessWidget {
                 style: GoogleFonts.montserrat(
                     textStyle:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w600))),
-            // onTap: () =>
-            // Navigator.of(context).push(MaterialPageRoute(
-            //   builder: (context) => BluetoothPage(title: 'Bluetooth',),
-            //   )),
+            onTap: () =>
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => BluetoothPage(title: 'Bluetooth',),
+              )),
           ),
           ListTile(
             leading: const Icon(

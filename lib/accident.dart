@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:telephony/telephony.dart';
+//import 'package:telephony/telephony.dart';
 
 class AccidentButtonPage extends StatefulWidget {
   const AccidentButtonPage({super.key});
@@ -18,7 +18,9 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
   String address = "address";
 
   String message = "";
-  final telephony = Telephony.instance;
+  
+// -----------> TELEPHONY <----------------
+  //final telephony = Telephony.instance;
 
   // gelocator
   // needs internet connection
@@ -60,9 +62,13 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
         '${place.street}, ${place.locality}, ${place.postalCode}, ${place.administrativeArea}, ${place.country}';
     String loc = location;
     List<String> num = ["8547940892"];
-    for (int i = 0; i < num.length; i++) {
-      msgnumber(num[i], loc, address);
-    }
+
+
+// -----------> TELEPHONY <----------------
+
+    // for (int i = 0; i < num.length; i++) {
+    //   msgnumber(num[i], loc, address);
+    // }
     //msgnumber(num, loc, address);
     setState(() {});
   }
@@ -108,12 +114,14 @@ class _AccidentButtonPageState extends State<AccidentButtonPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar2);
   }
 
-  void msgnumber(String number, String location, String address) {
-    telephony.sendSms(
-      to: number,
-      message: "Emergency! Accident detected!\n$location\nCoordinate: $address",
-    );
-  }
+
+// -----------> TELEPHONY <----------------
+  // void msgnumber(String number, String location, String address) {
+  //   telephony.sendSms(
+  //     to: number,
+  //     message: "Emergency! Accident detected!\n$location\nCoordinate: $address",
+  //   );
+  // }
 
 
   
